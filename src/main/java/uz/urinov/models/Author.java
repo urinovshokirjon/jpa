@@ -1,13 +1,22 @@
 package uz.urinov.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @Entity
 @Table(name = "author")
 
@@ -23,10 +32,9 @@ import java.time.LocalDateTime;
         }
 )
  */
-public class Author {
+public class Author extends BaseEntity {
 
-    @Id
-    @GeneratedValue    //
+    //
             /*(strategy = GenerationType.TABLE, generator = "author_sequence")
     @SequenceGenerator(name = "author_sequence", sequenceName = "author_sequence", allocationSize = 1)
     @TableGenerator(name = "author_id_gen", table = "id_generator",pkColumnName = "id_name", valueColumnName = "id_value",allocationSize = 1)
@@ -34,10 +42,8 @@ public class Author {
 /*    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_seq")
    @SequenceGenerator(name = "author_seq", sequenceName = "author_seq", allocationSize = 50) // eng yaxshi variant shu
  */
-    
-    private Integer id;
 
-    @Column(name = "f-name", length = 35)
+    @Column(name = "first-name", length = 35)
     private String firstName;
 
     private String lastName;
@@ -47,9 +53,12 @@ public class Author {
 
     private int age;
 
-    @Column(updatable = false, nullable = false)
-    private LocalDateTime createdAt;
+    @ManyToMany(mappedBy = "authors")
+    private List<Course> courses;
 
-    @Column(insertable = false)
-    private LocalDateTime lastModified;
+//    @Column(updatable = false, nullable = false)
+//    private LocalDateTime createdAt;
+//
+//    @Column(insertable = false)
+//    private LocalDateTime lastModified;
 }
